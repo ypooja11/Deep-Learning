@@ -1,59 +1,48 @@
 import torch
 from torch import nn
+import numpy as np
 class Network(nn.Module):
     def __init__(self):
-        super().__init__()
+        self.input = x
+        self.y = y
+        self.weights_in = np.random.uniform(-1, 1,(self.y.shape[1],self.input.shape[1]))
+        self.weights_out = np.random.uniform(-1, 1,(self.y.shape[1],self.input.shape[1]))     
+        self.output     = np.random.uniform(-1, 1,self.y.shape)
         
-        # Inputs to hidden layer linear transformation
-        self.hidden = nn.Linear(784, 256)
-        # Output layer, 10 units - one for each digit
-        self.output = nn.Linear(256, 10)
+def forward(self,fnc):
+    self.output[fnc] = np.sum(self.weights_out*self.input[fnc]*np.sin(np.pi*self.input[fnc]*self.weights_in),axis = 1)
+   
+def backprop(self,fnc):
+        error = np.square(self.y[fnc]-self.output[fnc])
+        error_output = self.y[fnc]-self.output[fnc]
+        output_weights_in = self.weights_out * np.square(self.input[fnc]) * np.pi * np.cos(np.pi*self.input[fnc]*self.weights_in)
+        output_weights_out = self.input[fnc]*np.sin(np.pi*self.input[fnc]*self.weights_in)
+        weights_in = np.dot(error_output,output_weights_in)
+        weights_out = np.dot(error_output,output_weights_out)
+        self.weights_in += weights_in*0.05
+        self.weights_out += weights_out*0.05
         
-        # Define sigmoid activation and softmax output 
-        self.sigmoid = nn.Sigmoid()
-        self.softmax = nn.Softmax(dim=1)
-        
-    def forward(self, x):
-        # Pass the input tensor through each of our operations
-        x = self.hidden(x)
-        x = self.sigmoid(x)
-        x = self.output(x)
-        x = self.softmax(x)
-        
-        return x
-
-        class Network(nn.Module):
-            self.hidden = nn.Linear(784, 256)
-            self.output = nn.Linear(256, 10)
-            self.sigmoid = nn.Sigmoid()
-            self.softmax = nn.Softmax(dim=1)
+ def predict(self,ip):
+        predictions = []
+        for elm in ip:
+            predictions.append(np.sum(self.weights_out*elm*np.sin(np.pi*elm*self.weights_in),axis = 1).tolist())
+        return np.array(predictions)
     
-def forward(self, x):
-    x = self.hidden(x)
-    x = self.sigmoid(x)
-    x = self.output(x)
-    x = self.softmax(x)
-model = Network()
-model
-
-input_size = 784
-hidden_sizes = [128, 64]
-output_size = 10# Build a feed-forward network
-model = nn.Sequential(nn.Linear(input_size, hidden_sizes[0]),
-                      nn.ReLU(),
-                      nn.Linear(hidden_sizes[0], hidden_sizes[1]),
-                      nn.ReLU(),
-                      nn.Linear(hidden_sizes[1], output_size),
-                      nn.Softmax(dim=1))
-print(model)
-
-from collections import OrderedDict
-model = nn.Sequential(OrderedDict([
-                      ('fc1', nn.Linear(input_size, hidden_sizes[0])),
-                      ('relu1', nn.ReLU()),
-                      ('fc2', nn.Linear(hidden_sizes[0], hidden_sizes[1])),
-                      ('relu2', nn.ReLU()),
-                      ('output', nn.Linear(hidden_sizes[1], output_size)),
-                      ('softmax', nn.Softmax(dim=1))]))
-model
-
+def save_weights(self,dir_in = './weights_in.npy',dir_out = './weights_out.npy'):
+        np.save(dir_in,self.weights_in)
+        np.save(dir_out,self.weights_out)
+        
+  def import_weights(self,dir_in = './weights_in.npy',dir_out = './weights_out.npy'):
+        self.weights_in = np.load(dir_in)
+        self.weights_out = np.load(dir_out)
+x = np.array([[0.01,0.1,0.01],[0.01,0.99,0.99],[0.99,0.99,0.01],[0.99,0.99,0.01],[0.9,0.9,0.9]])
+y = np.array([[0.01,0.01,0.01],[0.01,0.99,0.99],[0.01,0.99,0.99],[0.01,0.99,0.99],[0.99,0.99,0.01]])
+nn = NeuralNetwork(x,y)
+#TRAIN NETWORK FOR 2000 TIMES.
+for gen_cnt in range(2000):
+    for cnt in range(5):
+        nn.feedforward(cnt)
+        nn.backprop(cnt)
+#PREDICT THE TEST DATA
+predictions = nn.predict(np.array([[0.01,0.2,0.2],[0.9,0.1,0.95]]))
+print('Predictions:\n',np.around(predictions),'\nExpected:\n',[[0,0,0],[0,1,1]])
