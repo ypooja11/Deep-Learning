@@ -83,7 +83,8 @@ def train(num_epochs, cnn, loaders):
             
             loss.backward()                             
             optimizer.step()                
-            
+            plt.plot(epoch,loss.item())
+            plt.title('Training loss')
             if (i+1) % 100 == 0:
                 print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}' 
                        .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))               
@@ -93,6 +94,8 @@ def train(num_epochs, cnn, loaders):
     
     
     pass
+    plt.show()
+        
 train(num_epochs, cnn, loaders)
 
 def test():
@@ -104,5 +107,7 @@ def test():
             pred_y = torch.max(test_output, 1)[1].data.squeeze()
             accuracy = (pred_y == labels).sum().item() / float(labels.size(0))
             passprint('Test Accuracy of the model on the 10000 test images: %.2f' % accuracy)
+            plt.plot(accuracy)
+        plt.show()
     
     passtest()
