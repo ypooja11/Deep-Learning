@@ -45,16 +45,16 @@ class CNN(nn.Module):
                 padding=2,                  
             ),                              
             nn.ReLU()                                          
-        )        # fully connected layer, output 10 classes
+        )        
         self.out = nn.Linear(32 * 7 * 7, 10)    
         def forward(self, x):
             x = self.conv1(x)
-            x = self.conv2(x)        # flatten the output of conv2 to (batch_size, 32 * 7 * 7)
+            x = self.conv2(x)        
             x = x.view(x.size(0), -1)       
             output = self.out(x)
-            return output, x    # return x for visualization
+            return output, x    
 cnn=CNN()
-print(cnn)
+#print(cnn)
 loss_func = nn.CrossEntropyLoss()   
 loss_func
 
@@ -68,24 +68,20 @@ def train(num_epochs, cnn, loaders):
     
     cnn.train()
         
-    # Train the model
     total_step = len(loaders['train'])
         
     for epoch in range(num_epochs):
         for i, (images, labels) in enumerate(loaders['train']):
             
-            # gives batch data, normalize x when iterate train_loader
-            b_x = Variable(images)   # batch x
-            b_y = Variable(labels)   # batch y
+            b_x = Variable(images)  
+            b_y = Variable(labels)   
             
             output = cnn(b_x)[0]               
             loss = loss_func(output, b_y)
             
-            # clear gradients for this training step   
             optimizer.zero_grad()           
             
-            # backpropagation, compute gradients 
-            loss.backward()                # apply gradients             
+            loss.backward()                             
             optimizer.step()                
             
             if (i+1) % 100 == 0:
@@ -100,7 +96,6 @@ def train(num_epochs, cnn, loaders):
 train(num_epochs, cnn, loaders)
 
 def test():
-    # Test the model
     cnn.eval()    with torch.no_grad():
         correct = 0
         total = 0
