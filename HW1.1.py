@@ -38,11 +38,11 @@ def save_weights(self,dir_in = './weights_in.npy',dir_out = './weights_out.npy')
 x = np.array([[0.01,0.1,0.01],[0.01,0.99,0.99],[0.99,0.99,0.01],[0.99,0.99,0.01],[0.9,0.9,0.9]])
 y = np.array([[0.01,0.01,0.01],[0.01,0.99,0.99],[0.01,0.99,0.99],[0.01,0.99,0.99],[0.99,0.99,0.01]])
 nn = NeuralNetwork(x,y)
-#TRAIN NETWORK FOR 2000 TIMES.
+
 for gen_cnt in range(2000):
     for cnt in range(5):
         nn.feedforward(cnt)
         nn.backprop(cnt)
-#PREDICT THE TEST DATA
+
 predictions = nn.predict(np.array([[0.01,0.2,0.2],[0.9,0.1,0.95]]))
 print('Predictions:\n',np.around(predictions),'\nExpected:\n',[[0,0,0],[0,1,1]])
