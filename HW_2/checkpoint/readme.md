@@ -1,1 +1,1 @@
-here is where your model and log will be saved.
+Model and log will be saved here
